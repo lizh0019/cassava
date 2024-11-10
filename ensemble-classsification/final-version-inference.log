@@ -1,0 +1,60 @@
+11.3s 1 2021-03-09 13:00:21.768263: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.10.2
+11.4s 2 2021-03-09 13:00:21.928695: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.10.2
+77.6s 3 0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00,  1.47it/s]100%|██████████| 1/1 [00:00<00:00,  1.20it/s]
+78.5s 4 2021-03-09 13:01:28.982743: I tensorflow/compiler/jit/xla_cpu_device.cc:41] Not creating XLA devices, tf_xla_enable_xla_devices not set
+78.5s 5 2021-03-09 13:01:28.986327: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcuda.so.1
+78.5s 6 2021-03-09 13:01:28.990729: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.5s 7 2021-03-09 13:01:28.992364: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties:
+78.5s 8 pciBusID: 0000:00:04.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+78.5s 9 coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+78.5s 10 2021-03-09 13:01:28.992565: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.10.2
+78.5s 11 2021-03-09 13:01:28.993001: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.10
+78.5s 12 2021-03-09 13:01:28.993304: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.10
+78.5s 13 2021-03-09 13:01:28.993622: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+78.5s 14 2021-03-09 13:01:28.993870: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+78.5s 15 2021-03-09 13:01:28.994144: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+78.5s 16 2021-03-09 13:01:28.994374: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.10
+78.7s 17 2021-03-09 13:01:29.232986: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.7
+78.7s 18 2021-03-09 13:01:29.233930: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 19 2021-03-09 13:01:29.235721: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 20 2021-03-09 13:01:29.238533: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+78.7s 21 2021-03-09 13:01:29.239362: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+78.7s 22 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+78.7s 23 2021-03-09 13:01:29.240163: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 24 2021-03-09 13:01:29.241389: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1720] Found device 0 with properties:
+78.7s 25 pciBusID: 0000:00:04.0 name: Tesla P100-PCIE-16GB computeCapability: 6.0
+78.7s 26 coreClock: 1.3285GHz coreCount: 56 deviceMemorySize: 15.90GiB deviceMemoryBandwidth: 681.88GiB/s
+78.7s 27 2021-03-09 13:01:29.241697: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.10.2
+78.7s 28 2021-03-09 13:01:29.241990: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.10
+78.7s 29 2021-03-09 13:01:29.242248: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublasLt.so.10
+78.7s 30 2021-03-09 13:01:29.242455: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcufft.so.10
+78.7s 31 2021-03-09 13:01:29.242679: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcurand.so.10
+78.7s 32 2021-03-09 13:01:29.242902: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusolver.so.10
+78.7s 33 2021-03-09 13:01:29.243123: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcusparse.so.10
+78.7s 34 2021-03-09 13:01:29.243349: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.7
+78.7s 35 2021-03-09 13:01:29.243697: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 36 2021-03-09 13:01:29.244849: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 37 2021-03-09 13:01:29.246042: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1862] Adding visible gpu devices: 0
+78.7s 38 2021-03-09 13:01:29.246503: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1261] Device interconnect StreamExecutor with strength 1 edge matrix:
+78.7s 39 2021-03-09 13:01:29.246675: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1267]      0
+78.7s 40 2021-03-09 13:01:29.246830: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1280] 0:   N
+78.7s 41 2021-03-09 13:01:29.250549: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 42 2021-03-09 13:01:29.251800: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 43 2021-03-09 13:01:29.252974: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:941] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+78.7s 44 2021-03-09 13:01:29.254222: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 12753 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-16GB, pci bus id: 0000:00:04.0, compute capability: 6.0)
+78.7s 45 2021-03-09 13:01:29.259459: I tensorflow/compiler/jit/xla_gpu_device.cc:99] Not creating XLA devices, tf_xla_enable_xla_devices not set
+90.7s 46 0%|          | 0/1 [00:00<?, ?it/s]2021-03-09 13:01:41.210977: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:116] None of the MLIR optimization passes are enabled (registered 2)
+90.7s 47 2021-03-09 13:01:41.224246: I tensorflow/core/platform/profile_utils/cpu_utils.cc:112] CPU Frequency: 2000170000 Hz
+91.6s 48 2021-03-09 13:01:42.098818: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudnn.so.7
+94.3s 49 2021-03-09 13:01:44.800473: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcublas.so.10
+98.9s 50 100%|██████████| 1/1 [00:08<00:00,  8.26s/it]
+100.4s 51 image_id,label
+100.4s 52 2216849948.jpg,2
+106.6s 53 /opt/conda/lib/python3.7/site-packages/traitlets/traitlets.py:2561: FutureWarning: --Exporter.preprocessors=["remove_papermill_header.RemovePapermillHeader"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.
+106.6s 54 FutureWarning,
+106.6s 55 [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+106.8s 56 [NbConvertApp] Writing 33945 bytes to __notebook__.ipynb
+108.2s 57 /opt/conda/lib/python3.7/site-packages/traitlets/traitlets.py:2561: FutureWarning: --Exporter.preprocessors=["nbconvert.preprocessors.ExtractOutputPreprocessor"] for containers is deprecated in traitlets 5.0. You can pass `--Exporter.preprocessors item` ... multiple times to add items to a list.
+108.2s 58 FutureWarning,
+108.2s 59 [NbConvertApp] Converting notebook __notebook__.ipynb to html
+109.0s 60 [NbConvertApp] Writing 355754 bytes to __results__.html

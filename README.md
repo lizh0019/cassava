@@ -3,6 +3,28 @@
 ## Overview
 This project provides a machine learning pipeline for classifying cassava leaf diseases using image segmentation, feature extraction, and an ensemble deep learning classifier. The approach includes both traditional and deep learning-based segmentation methods, a Progressive Learning Algorithm (PLA) for feature extraction, and an ensemble model for classification. It achieved best performance in Kaggle 2020 competition Cassava Leaf Disease Classification to identify the type of disease present on a Cassava Leaf image.
 
+## 1st Place Solution "Cassava Leaf Disease Classification"
+### About this Competition
+Can you identify a problem with a cassava plant using a photo from a relatively inexpensive camera? This competition will challenge you to distinguish between several diseases that cause material harm to the food supply of many African countries. In some cases the main remedy is to burn the infected plants to prevent further spread, which can make a rapid automated turnaround quite useful to the farmers.
+## Notebook description
+The inference notebook of our final submission which scored ~91.3% on public and private leaderboard, available at:
+./ensemble-classsification/final-version-inference.ipynb
+We used an ensemble of four different models and stacked those models together using a mean approach.
+Logs are available at: ensemble-classsification/final-version-inference.log
+
+##Code Reference
+You can find the according training code in these notebooks:
+
+EfficientNet B4 (TPU Training): https://www.kaggle.com/jannish/cassava-leaf-disease-efficientnetb4-tpu
+ResNext50_32x4d (GPU Training): https://www.kaggle.com/hiarsl/cassava-leaf-disease-resnext50
+ViT (TPU Training): https://www.kaggle.com/sebastiangnther/cassava-leaf-disease-vit-tpu-training
+In order to find the final combination of all the models we tested, we iteratively tried different ensembles using this notebook: https://www.kaggle.com/jannish/cassava-leaf-disease-finding-final-ensembles
+
+Ensembling by using OOF predictions
+Our final submission first averaged the probabilities of the predicted classes of ViT and ResNext. This averaged probability vector was then merged with the predicted probabilities of EfficientnetB4 and MobileNet(CropNet) in a second stage. For this purpose, the values were simply summed up.
+
+Finally, we would like to thank all the Kagglers who posted their notebooks and gave valuable hints on which models to try!
+
 ## Project Structure
 cassava code/
 ├── ensemble-classsification
@@ -39,6 +61,7 @@ cassava code/
         ├── src
         └── tests
 
+
 #Main components:
 
 ## 1. Segmentation
@@ -66,7 +89,7 @@ cassava-leaf-disease-recognition available in repository <git@github.com:lizh001
 #Prepare Data:
 
 Training and testing images available in <https://www.kaggle.com/competitions/cassava-leaf-disease-classification/data>
-Simply login Kaggle and download the dataset.
+Simply login Kaggle and download the dataset, and put in ./ensemble-classsification/input/cassava-leaf-disease-classification
 
 ##Dataset structure:
 
@@ -84,6 +107,8 @@ label_num_to_disease_map.json:
 "3":string"Cassava Mosaic Disease (CMD)"
 "4":string"Healthy"
 }
+
+
 
 #Implementation steps
 
