@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/li/triplet-reid/models_vehicle/checkpoint-102873"
+all_model_checkpoint_paths: "/home/li/triplet-reid/models_vehicle/checkpoint-102873"

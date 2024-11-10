@@ -1,0 +1,33 @@
+
+
+find  "/home/li/insightface/datasets/market1501/test/"  -type f -name "*.jpg" > ~/triplet-reid/data/files_test.txt
+
+find  "/home/li/insightface/datasets/market1501/query/"  -type f -name "*.jpg" > ~/triplet-reid/data/files_query.txt
+
+
+
+find  "/home/li/insightface/datasets/market1501/gt_bbox/"  -type f -name "*.jpg" > ~/triplet-reid/data/files_MQ.txt
+
+
+
+python3 trinet_embed.py data/files_test.txt  data/trinet-market1501.npz  > data/market1501_test_features.csv
+
+python3 trinet_embed.py data/files_query.txt  data/trinet-market1501.npz  > data/market1501_query_features.csv
+
+python3 trinet_embed.py data/files_MQ.txt  data/trinet-market1501.npz  > data/market1501_MQ_features.csv
+
+
+
+
+python3 train.py --train_set data/market1501_train.csv  --image_root /home/li/insightface/datasets/market1501  --experiment_root ./experiments --train_iterations 500000 --initial_checkpoint /home/li/triplet-reid/data/resnet_v1_50.ckpt
+
+bash market1501_train.sh
+
+
+python3 embed.py  --experiment_root ./experiments   --dataset data/market1501_query.csv --filename market1501_query_embeddings.h5
+python3 embed.py  --experiment_root ./experiments   --dataset data/market1501_test.csv --filename market1501_test_embeddings.h5
+python3 evaluate.py    --excluder market1501  --query_dataset data/market1501_query.csv   --query_embeddings experiments/market1501_query_embeddings.h5     --gallery_dataset data/market1501_test.csv     --gallery_embeddings experiments/market1501_test_embeddings.h5     --metric euclidean     --filename experiments/market1501_evaluation.json
+
+python3 embed.py   --experiment_root ./experiments  --dataset data/market1501_query.csv   --filename market1501_query_embeddings_augmented.h5  --flip_augment  --crop_augment five   --aggregator mean
+python3 embed.py   --experiment_root ./experiments  --dataset data/market1501_test.csv   --filename market1501_test_embeddings_augmented.h5  --flip_augment  --crop_augment five   --aggregator mean
+python3 evaluate.py    --excluder market1501  --query_dataset data/market1501_query.csv   --query_embeddings experiments/market1501_query_embeddings_augmented.h5     --gallery_dataset data/market1501_test.csv     --gallery_embeddings experiments/market1501_test_embeddings_augmented.h5     --metric euclidean     --filename experiments/market1501_evaluation_augmented.json

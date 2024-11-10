@@ -1,0 +1,187 @@
+function fastclassify(root,dataset)
+%% classify
+initialization
+
+load Hist_test
+
+Pathname=strcat(root,dataset,'\');%'D:\databases\101_ObjectCategories\'
+Category=dir(strcat(Pathname,'*.*'));%read the database
+CategoryNum=size(Category,1);
+%obtain offset
+offset=[0];
+
+
+for Ii=1:CategoryNum,
+    if (Category(Ii).isdir==1 && ~strcmp(Category(Ii).name,'.') && ~strcmp(Category(Ii).name,'..')), 
+        foldername=Category(Ii).name;
+        Image=dir(strcat(Pathname,foldername,'\*.jpg'));
+        imgnum=0;
+        for k=1:length(Image),
+               entropyfile=strcat(Pathname,foldername,'\',Image(k).name,filetype);
+               fr = fopen(entropyfile, 'r');
+               if fr == -1,
+                    fw = fopen(entropyfile, 'w');
+                    enquiry=strcat(Pathname,foldername,'\',Image(k).name);
+                    Itest = imread(enquiry);Image(Ii).size=size(Itest);I=double(Itest);     
+                    if strcmp(filetype,'.klentropy'),
+                        descriptors=GenerateEntropyDescriptors( I, 8, 16 ,1 ,Q);
+                    end
+                    if strcmp(filetype,'.klentropy1'),
+                        descriptors=GenerateEntropyDescriptors( I, 16, 32 ,1 ,Q);
+                    end
+                    if strcmp(filetype,'.sift_sep'),
+                        descriptors=GenerateSiftDescriptors( I, 8, 8, 1);
+                    end
+                    if strcmp(filetype,'.sift2'),
+                        descriptors=GenerateFastSiftDescriptors( I, 8, 1 );
+                    end
+                    if strcmp(filetype,'.sift'),
+                        descriptors=GenerateSiftDescriptors( I, 8, 16 ,1);descriptors = sp_normalize_sift(double(descriptors));
+                    end
+                    if strcmp(filetype,'.klentropy2'),
+                        descriptors=GenerateEntropyDescriptors( I, 8, 16 ,1 ,Q);
+                    end
+                    if strcmp(filetype,'.klentropy_8p'),
+                        descriptors=GenerateEntropy8pDescriptors( I, 8, 16 ,1 ,Q1);
+                    end 
+                    if strcmp(filetype,'.siftentropy'),
+                        descriptors=GenerateSift_EntropyDescriptors( I, 8, 16 ,1);
+                    end
+                    fwrite(fw, descriptors, 'double'); 
+                    fclose(fw);
+                else
+                    descriptors=fread(fr,'double');
+                    descriptors=reshape(descriptors,length(descriptors)/feature_dim,feature_dim);
+                    fclose(fr);
+               end
+
+
+            
+%                     des_num_per_image=floor(size(Hist,1)/(CategoryNum-2)/length(Image));
+%                     patchsize=min(des_num_per_image,size(descriptors,1));
+%                     patchindex=randperm(size(descriptors,1));
+%                     patchindex=sort(patchindex(1:patchsize));
+%             Hist((offset(end)+imgnum+1):(offset(end)+imgnum+patchsize),:)=descriptors(patchindex,:);%histogram for every image
+%             imgnum=imgnum+patchsize;
+%             %if (~isempty(strfind(lower(dataset),'test')) && imgnum==100), break; end
+        end
+        offset=[offset,offset(end)+imgnum];
+    end
+    display(strcat(foldername,' histogram calculated'))
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+for Ii=1:CategoryNum,
+    categoryimgnum=0;
+    if (Category(Ii).isdir==1 && ~strcmp(Category(Ii).name,'.') && ~strcmp(Category(Ii).name,'..')), 
+        foldername=Category(Ii).name;
+        Image=dir(strcat(Pathname,foldername,'\*.jpg'));
+        
+                    des_num_per_image=floor(Ensemblesize/(CategoryNum-2)/length(Image));
+                    patchsize=des_num_per_image;
+%                     patchsize=min(des_num_per_image,size(descriptors,1));
+%                     patchindex=randperm(size(descriptors,1));
+%                     patchindex=sort(patchindex(1:patchsize));
+%                                 Hist((offset(end)+imgnum+1):(offset(end)+imgnum+patchsize),:)=descriptors(patchindex,:)+eps;%histogram for every image
+            %imgnum=imgnum+patchsize;
+        
+        
+        
+        
+        
+        categoryimgnum=categoryimgnum+length(Image)*patchsize;
+        offset=[offset,offset(end)+categoryimgnum];
+    end
+end
+
+yapp = zeros(offset(end),1);
+for i=1:CategoryNum-2,
+    pos=offset(i+1);
+    yapp(offset(i)+1:pos) = i; 
+end
+
+
+
+
+
+
+fid=fopen('Sparse_Hist_Test.txt', 'wt');
+for i=1:size(yapp),
+    fprintf(fid, '%d ', yapp(i));
+    for j=1:size(Hist,2),
+        if Hist(i,j)~=0,
+            fprintf(fid, '%s %f ',strcat(num2str(j),':'),Hist(i,j));
+        end
+    end
+    fprintf(fid, '\n');
+end
+fclose(fid)
+
+!predict.exe Sparse_Hist_Test.txt CVM.model.txt CVM.output.txt
+
+
+fid = fopen('CVM.output.txt', 'r');
+ypred= fscanf(fid,'%d');
+fclose(fid);
+
+figure,row=floor(size(Hist,1)^0.5);column=floor(size(Hist,1)/row)+1;
+CategoryNum=length(offset)-1;
+Confusion.matrix=zeros(CategoryNum,CategoryNum);
+Confusion.name={};imgnum=0;accuracy=0;
+for Ii=1:CategoryNum+2,
+    if (Category(Ii).isdir==1 && ~strcmp(Category(Ii).name,'.') && ~strcmp(Category(Ii).name,'..')), 
+        foldername=Category(Ii).name;Confusion.name{Ii-2}=foldername;
+        Image=dir(strcat(Pathname,foldername,'\*.jpg'));
+        categoryimgnum=0;
+        for k=1:length(Image),
+            enquiry=strcat(Pathname,foldername,'\',Image(k).name);
+            %fprintf(ClassifierResult, '%s\n', enquiry);
+            imgnum=imgnum+1;
+            categoryimgnum=categoryimgnum+1;
+            Confusion.matrix(Ii-2,ypred(imgnum))=Confusion.matrix(Ii-2,ypred(imgnum))+1;
+            Result=Category(ypred(imgnum)+2).name;
+            result=strcmp(foldername,Result);
+            accuracy=accuracy+result;
+            %fprintf(ClassifierResult, strcat(Result,'\n'));    
+            %I=imread(enquiry);subplot(row,column,imgnum),subimage(I);title(Result),axis off
+            %if categoryimgnum==100, break; end
+        end
+    end
+end
+save Confusion Confusion
+Matrix=Confusion.matrix;
+matrix=Matrix./repmat(sum(Matrix,2),1,CategoryNum);
+diagmatrix=diag(matrix);
+[score,index]=sort(diagmatrix,'descend');
+for i=1:CategoryNum,Confusion.name{index(i)},score(i),end
+accuracy0=accuracy/imgnum
+accuracy1=mean(diagmatrix(1:CategoryNum))
+
+display(strcat(num2str(imgnum), ' test images classified'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

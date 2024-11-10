@@ -1,0 +1,149 @@
+function BoW_GlobalSIFT(root,dataset)
+initialization
+%% obtain histograms for each image
+%C=load('codebook_Caltech101.txt');
+%C=load('codebook_single.txt');
+%C=load('codebook_GlobalSIFT.txt');
+Pathname=strcat(root,dataset,'\');%'D:\databases\101_ObjectCategories\'
+Category=dir(strcat(Pathname,'*.*'));%read the database
+CategoryNum=size(Category,1);
+%Itest=imread('D:\databases\NTU scene\Tiny NTU\flower\204902928_af39abcad7.jpg');
+%load EnsembleMeanVar 
+Hist=zeros(Ensemblesize,feature_dim);
+offset=[0];
+%load Q_15s
+
+%load Hq
+for Ii=1:CategoryNum,
+    if (Category(Ii).isdir==1 && ~strcmp(Category(Ii).name,'.') && ~strcmp(Category(Ii).name,'..')), 
+        foldername=Category(Ii).name;
+        Image=dir(strcat(Pathname,foldername,'\*.jpg'));
+        imgnum=0;
+        for k=1:length(Image),
+
+
+
+               entropyfile=strcat(Pathname,foldername,'\',Image(k).name,filetype);
+
+% entropyfile1=strcat(Pathname,foldername,'\',Image(k).name,'.sifte');
+% entropyfile2=strcat(Pathname,foldername,'\',Image(k).name,'.klentropy1');
+% fr1 = fopen(entropyfile1, 'r');
+% fr2 = fopen(entropyfile2, 'r');
+% descriptors1=fread(fr1,'double');
+% descriptors1=reshape(descriptors1,length(descriptors1)/128,128);
+% descriptors2=fread(fr2,'double');
+% descriptors2=reshape(descriptors2,length(descriptors2)/128,128);
+% fclose(fr1);
+% fclose(fr2);
+% descriptorssize=min(size(descriptors1,1),size(descriptors2,1));
+% descriptors=[descriptors1(1:descriptorssize,:),descriptors2(1:descriptorssize,:)];            
+% descriptors=descriptors(:,1:128);
+               fr = fopen(entropyfile, 'r');
+               %fr = -1;
+               if fr == -1,
+                    fw = fopen(entropyfile, 'w');
+                    enquiry=strcat(Pathname,foldername,'\',Image(k).name);
+                    Itest = imread(enquiry);Image(Ii).size=size(Itest);I=double(Itest);     
+                    if strcmp(filetype,'.klentropy'),
+                        descriptors=GenerateEntropyDescriptors( I, 8, 16 ,1 ,Q);
+                    end
+                    if strcmp(filetype,'.klentropy1'),
+                        descriptors=GenerateEntropyDescriptors( I, 16, 32 ,1 ,Q);
+                    end
+                    if strcmp(filetype,'.sift_sep'),
+                        descriptors=GenerateSiftDescriptors( I, 8, 8, 1);
+                    end
+                    if strcmp(filetype,'.sift2'),
+                        descriptors=GenerateFastSiftDescriptors( I, 8, 1 );
+                    end
+                    if strcmp(filetype,'.sift'),
+                        descriptors=GenerateSiftDescriptors( I, 8, 16 ,1);descriptors = sp_normalize_sift(double(descriptors));
+                    end
+                    if strcmp(filetype,'.klentropy2'),
+                        descriptors=GenerateEntropyDescriptors( I, 8, 16 ,1 ,Q);
+                    end
+                    if strcmp(filetype,'.klentropy_8p'),
+                        descriptors=GenerateEntropy8pDescriptors( I, 8, 16 ,1 ,Q1);
+                    end 
+                    if strcmp(filetype,'.siftentropy'),
+                        descriptors=GenerateSift_EntropyDescriptors( I, 8, 16 ,1);
+                    end
+                    fwrite(fw, descriptors, 'double'); 
+                    fclose(fw);
+                else
+                    descriptors=fread(fr,'double');
+                    descriptors=reshape(descriptors,length(descriptors)/feature_dim,feature_dim);
+                    fclose(fr);
+               end
+
+            %descriptors=(descriptors-repmat(EnsembleMean,size(descriptors,1),1))./repmat(EnsembleStd+eps,size(descriptors,1),1);%normalize
+            %descriptors=descriptors-repmat(EnsembleMean,size(descriptors,1),1);
+%                indexbase=[1:4:size(descriptors,1)-4];indexoffset=round(4*rand(size(indexbase)));index=indexbase+indexoffset;
+%                descriptors=descriptors(index,:);
+%tmpindex=randperm(size(descriptors,1));
+%tmpindex=sort(tmpindex(1:round(max(1000,size(descriptors,1)/4))));
+%descriptors=descriptors(tmpindex,:);
+
+
+% info=imfinfo(strcat(Pathname,foldername,'\',Image(k).name));
+% patchSize=16;gridSpacing=8;
+% Imagesizeratio=sqrt(Imagesize(1)*Imagesize(2)/info.Width/info.Height);
+%         Width=round(Imagesizeratio*info.Width);
+%         Height=round(Imagesizeratio*info.Height);
+%     remX = mod(Width-patchSize,gridSpacing);
+%     offsetX = floor(remX/2)+1;
+%     remY = mod(Height-patchSize,gridSpacing);
+%     offsetY = floor(remY/2)+1;
+%     
+%     [grid_x,grid_y] = meshgrid(offsetX:gridSpacing:Width-patchSize+1, offsetY:gridSpacing:Height-patchSize+1);
+%     sampleindex=1:numel(grid_x);
+% sampleindex=reshape(sampleindex,size(grid_x));
+% b_sampleindex=zeros(size(sampleindex));
+% b_sampleindex(1:2:end,1:2:end)=1;
+% b_sampleindex(end,:)=0;b_sampleindex(:,end)=0;
+% xdim=sum(b_sampleindex(1,:)>0);
+% ydim=sum(b_sampleindex(:,1)>0);
+% newdescriptors=zeros(16*ydim*xdim,feature_dim);
+% for dim=1:feature_dim,
+%     tmpdescriptors=descriptors(:,dim);
+%     if numel(tmpdescriptors)<ydim*xdim,
+%         tmpdescriptors=[tmpdescriptors;tmpdescriptors(1:(ydim*xdim-size(tmpdescriptors)),:)];-1
+%     elseif numel(tmpdescriptors)>ydim*xdim,
+%         tmpdescriptors=tmpdescriptors(1:ydim*xdim,:);1
+%     end
+%     tmpdescriptors=double(reshape(tmpdescriptors,ydim,xdim));
+%     tmpdescriptors=resample(resample(tmpdescriptors,round(4*size(tmpdescriptors,1)),size(tmpdescriptors,1),2)',round(4*size(tmpdescriptors,2)),size(tmpdescriptors,2),2)';
+%     tmpdescriptors=tmpdescriptors(:);
+%     newdescriptors(:,dim)=tmpdescriptors;
+% end
+%     
+% descriptors=double(newdescriptors);
+
+%descriptors=resample(descriptors,round(8*size(descriptors,1)),size(descriptors,1),2);
+%hist_test=BoWhistogram(double(descriptors),codewordnum,C,1);
+%descriptors=descriptors';hist_test=descriptors(:);
+            %hist_test=hist(descriptors',C);
+            
+                    des_num_per_image=floor(size(Hist,1)/(CategoryNum-2)/length(Image));
+                    patchsize=min(des_num_per_image,size(descriptors,1));
+                    patchindex=randperm(size(descriptors,1));
+                    patchindex=sort(patchindex(1:patchsize));
+            Hist((offset(end)+imgnum+1):(offset(end)+imgnum+patchsize),:)=descriptors(patchindex,:);%histogram for every image
+            imgnum=imgnum+patchsize;
+            %if (~isempty(strfind(lower(dataset),'test')) && imgnum==100), break; end
+        end
+        offset=[offset,offset(end)+imgnum];
+    end
+    display(strcat(foldername,' histogram calculated'))
+end
+temppos=find(temp);
+temppos=temppos(end);
+Hist=Hist(~~sum(Hist,2),:);
+save offset offset
+totalimgnum=offset(end);
+if ~isempty(strfind(lower(dataset),'test')),
+    save Hist_test Hist CategoryNum totalimgnum
+end
+if ~isempty(strfind(lower(dataset),'train')),
+    save Hist_train Hist CategoryNum totalimgnum
+end

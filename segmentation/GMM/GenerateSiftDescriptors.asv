@@ -1,0 +1,53 @@
+function [siftArr] = GenerateSiftDescriptors( I, gridSpacing, patchSize, b_resize )
+%function [] = GenerateSiftDescriptors( imageFileList, imageBaseDir, dataBaseDir, maxImageSize, gridSpacing, patchSize, canSkip )
+%
+%Generate the dense grid of sift descriptors for each image
+%
+% imageFileList: cell of file paths
+% imageBaseDir: the base directory for the image files
+% dataBaseDir: the base directory for the data files that are generated
+%  by the algorithm. If this dir is the same as imageBaseDir the files
+%  will be generated in the same location as the image files
+% maxImageSize: the max image size. If the image is larger it will be
+%  resampeled.
+% gridSpacing: the spacing for the grid to be used when generating the
+%  sift descriptors
+% patchSize: the patch size used for generating the sift descriptor
+% canSkip: if true the calculation will be skipped if the appropriate data 
+%  file is found in dataBaseDir. This is very useful if you just want to
+%  update some of the data or if you've added new images.
+
+
+
+initialization
+if size(I,3)==3,
+    hsv = rgb2hsv(I);Iv=hsv(:,:,3); Is=hsv(:,:,2);Ih=hsv(:,:,1);
+    %Iv=rgb2gray(I/255);
+else Iv=double(I);
+end
+
+if b_resize,
+	Imagesizeratio=sqrt(Imagesize(1)*Imagesize(2)/size(Iv,1)/size(Iv,2));
+	Iv=resample(resample(Iv,round(Imagesizeratio*size(Iv,1)),size(Iv,1))',round(Imagesizeratio*size(Iv,2)),size(Iv,2))';
+%     Imagesizeratio1=Imagesize(1)/size(Iv,1);Imagesizeratio2=Imagesize(2)/size(Iv,2);
+%     Iv=resample(resample(Iv,round(Imagesizeratio1*size(Iv,1)),size(Iv,1))',round(Imagesizeratio2*size(Iv,2)),size(Iv,2))';
+end
+
+I=Iv;
+[hgt wid] = size(I);
+
+
+    %% make grid (coordinates of upper left patch corners)
+    remX = mod(wid-patchSize,gridSpacing);
+    offsetX = floor(remX/2)+1;
+    remY = mod(hgt-patchSize,gridSpacing);
+    offsetY = floor(remY/2)+1;
+    
+    [gridX,gridY] = meshgrid(offsetX:gridSpacing:wid-patchSize+1, offsetY:gridSpacing:hgt-patchSize+1);
+
+
+
+    %% find SIFT descriptors
+    siftArr = sp_find_sift_grid(I, gridX, gridY, patchSize, 0.8);
+    siftArr = sp_normalize_sift(double(siftArr));
+siftArr=siftArr';siftArr=siftArr
