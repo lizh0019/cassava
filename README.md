@@ -39,6 +39,7 @@ cassava code/
         ├── src
         └── tests
 
+#Main components:
 
 ## 1. Segmentation
 The segmentation pipeline uses two methods:
@@ -56,20 +57,18 @@ An ensemble of deep learning models (e.g., ResNet-50, EfficientNet) aggregates p
 ### Requirements
 - **Python 3.7+**
 - **Required Libraries**: `torch`, `torchvision`, `scikit-learn`, `numpy`, `pandas`
-- Install all dependencies by running:
-  ```bash
-  pip install -r requirements.txt
 
 
-Repository:
+#Repository:
 
 cassava-leaf-disease-recognition available in repository <git@github.com:lizh0019/cassava.git>
 
-Prepare Data:
+#Prepare Data:
 
 Training and testing images available in <https://www.kaggle.com/competitions/cassava-leaf-disease-classification/data>
+Simply login Kaggle and download the dataset.
 
-Dataset structure is as follow:
+##Dataset structure:
 
 test_images
 test_tfrecords
@@ -86,15 +85,16 @@ label_num_to_disease_map.json:
 "4":string"Healthy"
 }
 
+#Implementation steps
 
-Segmentation:
+##Segmentation:
 
 GMM segmentation:
 segmentation/GMM/leaf_segmentation.py
 Train the U-Net model:
 unet/src/train_unet.py
 
-Feature Extraction:
+##Feature Extraction:
 
 Extract features using PLA:
 feature-extraction-PLA/extract_features.py
@@ -103,14 +103,15 @@ Train the Ensemble Classifier:
 Train or use the pre-trained ensemble model:
 ensemble-classification/train_ensemble.py
 
-Inference on New Images:
+##Classification:
 ensemble-classification/infer.py
-Evaluation
+
+##Evaluation
 Result models are saved in ensemble-classification/results. 
 Analyze model performance with:
 ensemble-classification/evaluate_results.py
 
-Acknowledgments
+#Acknowledgments
 
 This project uses resources from the PyTorch Image Models (TIMM), FMix for augmentations, and traditional image processing libraries (VLFeat).
 
