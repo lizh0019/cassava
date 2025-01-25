@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/886058921.svg)](https://doi.org/10.5281/zenodo.14739854)
+
 # Cassava Leaf Disease Recognition System
 
 ## Overview
